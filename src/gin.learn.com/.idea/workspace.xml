@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="916477cd-647c-4e31-acf8-bf027bc1727b" name="Default Changelist" comment="" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="GOROOT" path="E:/software/golang" />
+  <component name="ProjectId" id="1XTvQcVU3EF0NpQGFlsyM88W0ES" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showExcludedFiles" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="go.import.settings.migrated" value="true" />
+    <property name="go.vendoring.notification.had.been.shown" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="settings.editor.selected.configurable" value="editor.preferences.fonts.default" />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="1" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="587" y="355" key="#GOROOT" timestamp="1581082969348">
+      <screen x="0" y="0" width="2560" height="1400" />
+    </state>
+    <state x="587" y="355" key="#GOROOT/0.0.2560.1400@0.0.2560.1400" timestamp="1581082969348" />
+    <state x="449" y="352" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1581083132850">
+      <screen x="0" y="0" width="2560" height="1400" />
+    </state>
+    <state x="449" y="352" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.2560.1400@0.0.2560.1400" timestamp="1581083132850" />
+    <state x="775" y="451" key="FileChooserDialogImpl" timestamp="1581082967408">
+      <screen x="0" y="0" width="2560" height="1400" />
+    </state>
+    <state x="775" y="451" key="FileChooserDialogImpl/0.0.2560.1400@0.0.2560.1400" timestamp="1581082967408" />
+    <state x="496" y="339" key="SettingsEditor" timestamp="1581083089508">
+      <screen x="0" y="0" width="2560" height="1400" />
+    </state>
+    <state x="496" y="339" key="SettingsEditor/0.0.2560.1400@0.0.2560.1400" timestamp="1581083089508" />
+  </component>
+</project>

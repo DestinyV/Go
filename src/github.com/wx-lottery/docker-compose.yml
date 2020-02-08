@@ -1,0 +1,29 @@
+version: "3"
+
+services:
+  web:
+    build: ./lottery
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+    restart: always
+    volumes:
+      - /etc/localtime:/etc/localtime
+
+  db:
+    image: mysql
+    command: [
+      "--character-set-server=utf8mb4",
+      "--collation-server=utf8mb4_unicode_ci",
+    ]
+    volumes:
+      - /etc/localtime:/etc/localtime
+      - ./mysql/data:/var/lib/mysql
+      - ./mysql/init:/docker-entrypoint-initdb.d
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: VKT.666666
+      MYSQL_ROOT_HOST: "%"
+    ports:
+      - "3306:3306"
