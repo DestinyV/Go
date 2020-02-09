@@ -33,7 +33,7 @@ type Config struct {
 	RedisConfig `ini:"redis"`
 }
 
-func paseIni(fileName string, distribution interface{}) (err error) {
+func AnalysisIni(fileName string, distribution interface{}) (err error) {
 	t := reflect.TypeOf(distribution)
 	if t.Kind() != reflect.Ptr {
 		err = errors.New("distribution param should be a pointer")
@@ -51,7 +51,7 @@ func paseIni(fileName string, distribution interface{}) (err error) {
 	}
 	// 切割字符串
 	linSlice := strings.Split(string(byteContent), "\r\n")
-	fmt.Println(linSlice)
+	// fmt.Println(linSlice)
 	var structName string
 	for idx, line := range linSlice {
 		line = strings.TrimSpace(line)
