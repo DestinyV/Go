@@ -1,6 +1,9 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"time"
+)
 
 // channel
 // 单纯地将函数并发执行是没有意义的。函数与函数间需要交换数据才能体现并发执行函数的意义。
@@ -150,3 +153,81 @@ func main() {
 // chan<- int是一个只写单向通道（只能对其写入int类型值），可以对其执行发送操作但是不能执行接收操作；
 // <-chan int是一个只读单向通道（只能从其读取int类型值），可以对其执行接收操作但是不能执行发送操作。
 // 在函数传参及任何赋值操作中可以将双向通道转换为单向通道，但反过来是不可以的。
+
+// 通道总结
+// channel常见的异常总结，如下图：channel异常总结
+
+// 关闭已经关闭的channel也会引发panic。
+
+// worker pool（goroutine池）
+// 在工作中我们通常会使用可以指定启动的goroutine数量–worker pool模式，控制goroutine的数量，防止goroutine泄漏和暴涨。
+
+// 一个简易的work pool示例代码如下：
+
+func worker(id int, jobs <-chan int, results chan<- int) {
+	for j := range jobs {
+		fmt.Printf("worker:%d start job:%d\n", id, j)
+		time.Sleep(time.Second)
+		fmt.Printf("worker:%d end job:%d\n", id, j)
+		results <- j * 2
+	}
+}
+
+// func main() {
+// 	jobs := make(chan int, 100)
+// 	results := make(chan int, 100)
+// 	// 开启3个goroutine
+// 	for w := 1; w <= 3; w++ {
+// 		go worker(w, jobs, results)
+// 	}
+// 	// 5个任务
+// 	for j := 1; j <= 5; j++ {
+// 		jobs <- j
+// 	}
+// 	close(jobs)
+// 	// 输出结果
+// 	for a := 1; a <= 5; a++ {
+// 		<-results
+// 	}
+// }
+// select多路复用
+// 在某些场景下我们需要同时从多个通道接收数据。通道在接收数据时，如果没有数据可以接收将会发生阻塞。你也许会写出如下代码使用遍历的方式来实现：
+
+// for{
+//     // 尝试从ch1接收值
+//     data, ok := <-ch1
+//     // 尝试从ch2接收值
+//     data, ok := <-ch2
+//     …
+// }
+// 这种方式虽然可以实现从多个通道接收值的需求，但是运行性能会差很多。为了应对这种场景，Go内置了select关键字，可以同时响应多个通道的操作。
+
+// // select的使用类似于switch语句，它有一系列case分支和一个默认的分支。每个case会对应一个通道的通信（接收或发送）过程。select会一直等待，直到某个case的通信操作完成时，就会执行case分支对应的语句。具体格式如下：
+
+// select{
+//     case <-ch1:
+//         ...
+//     case data := <-ch2:
+//         ...
+//     case ch3<-data:
+//         ...
+//     default:
+//         默认操作
+// }
+// 举个小例子来演示下select的使用：
+
+// func main() {
+// 	ch := make(chan int, 1)
+// 	for i := 0; i < 10; i++ {
+// 		select {
+// 		case x := <-ch:
+// 			fmt.Println(x)
+// 		case ch <- i:
+// 		}
+// 	}
+// }
+// 使用select语句能提高代码的可读性。
+
+// 可处理一个或多个channel的发送/接收操作。
+// 如果多个case同时满足，select会随机选择一个。
+// 对于没有case的select{}会一直等待，可用于阻塞main函数。
