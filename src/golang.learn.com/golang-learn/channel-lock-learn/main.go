@@ -206,7 +206,7 @@ package main
 //         instance = &singleton{}
 //     })
 //     return instance
-// }
+// } 
 // sync.Once其实内部包含一个互斥锁和一个布尔值，互斥锁保证布尔值和数据的安全，而布尔值用来记录初始化是否完成。这样设计就能保证初始化操作的时候是并发安全的并且初始化操作也不会被执行多次。
 
 // sync.Map
@@ -255,6 +255,8 @@ package main
 // 	}
 // 	wg.Wait()
 // }
+
+
 // 原子操作
 // 代码中的加锁操作因为涉及内核态的上下文切换会比较耗时、代价比较高。针对基本数据类型我们还可以使用原子操作来保证并发安全，因为原子操作是Go语言提供的方法它在用户态就可以完成，因此性能比加锁操作更好。Go语言中原子操作由内置的标准库sync/atomic提供。
 
@@ -266,23 +268,27 @@ package main
 // func LoadUint64(addr *uint64) (val uint64)
 // func LoadUintptr(addr *uintptr) (val uintptr)
 // func LoadPointer(addr *unsafe.Pointer) (val unsafe.Pointer)	读取操作
+
 // func StoreInt32(addr *int32, val int32)
 // func StoreInt64(addr *int64, val int64)
 // func StoreUint32(addr *uint32, val uint32)
 // func StoreUint64(addr *uint64, val uint64)
 // func StoreUintptr(addr *uintptr, val uintptr)
 // func StorePointer(addr *unsafe.Pointer, val unsafe.Pointer)	写入操作
+
 // func AddInt32(addr *int32, delta int32) (new int32)
 // func AddInt64(addr *int64, delta int64) (new int64)
 // func AddUint32(addr *uint32, delta uint32) (new uint32)
 // func AddUint64(addr *uint64, delta uint64) (new uint64)
 // func AddUintptr(addr *uintptr, delta uintptr) (new uintptr)	修改操作
+
 // func SwapInt32(addr *int32, new int32) (old int32)
 // func SwapInt64(addr *int64, new int64) (old int64)
 // func SwapUint32(addr *uint32, new uint32) (old uint32)
 // func SwapUint64(addr *uint64, new uint64) (old uint64)
 // func SwapUintptr(addr *uintptr, new uintptr) (old uintptr)
 // func SwapPointer(addr *unsafe.Pointer, new unsafe.Pointer) (old unsafe.Pointer)	交换操作
+
 // func CompareAndSwapInt32(addr *int32, old, new int32) (swapped bool)
 // func CompareAndSwapInt64(addr *int64, old, new int64) (swapped bool)
 // func CompareAndSwapUint32(addr *uint32, old, new uint32) (swapped bool)
@@ -298,75 +304,72 @@ type Counter interface {
 }
 
 // 普通版
-// type CommonCounter struct {
-// 	counter int64
-// }
+type CommonCounter struct {
+	counter int64
+}
 
-// func (c CommonCounter) Inc() {
-// 	c.counter++
-// }
+func (c CommonCounter) Inc() {
+	c.counter++
+}
 
-// func (c CommonCounter) Load() int64 {
-// 	return c.counter
-// }
+func (c CommonCounter) Load() int64 {
+	return c.counter
+}
 
 // 互斥锁版
-// type MutexCounter struct {
-// 	counter int64
-// 	lock    sync.Mutex
-// }
+type MutexCounter struct {
+	counter int64
+	lock    sync.Mutex
+}
 
-// func (m *MutexCounter) Inc() {
-// 	m.lock.Lock()
-// 	defer m.lock.Unlock()
-// 	m.counter++
-// }
+func (m *MutexCounter) Inc() {
+	m.lock.Lock()
+	defer m.lock.Unlock()
+	m.counter++
+}
 
-// func (m *MutexCounter) Load() int64 {
-// 	m.lock.Lock()
-// 	defer m.lock.Unlock()
-// 	return m.counter
-// }
+func (m *MutexCounter) Load() int64 {
+	m.lock.Lock()
+	defer m.lock.Unlock()
+	return m.counter
+}
 
 // 原子操作版
-// type AtomicCounter struct {
-// 	counter int64
-// }
+type AtomicCounter struct {
+	counter int64
+}
 
-// func (a *AtomicCounter) Inc() {
-// 	atomic.AddInt64(&a.counter, 1)
-// }
+func (a *AtomicCounter) Inc() {
+	atomic.AddInt64(&a.counter, 1)
+}
 
-// func (a *AtomicCounter) Load() int64 {
-// 	return atomic.LoadInt64(&a.counter)
-// }
+func (a *AtomicCounter) Load() int64 {
+	return atomic.LoadInt64(&a.counter)
+}
 
-// func test(c Counter) {
-// 	var wg sync.WaitGroup
-// 	start := time.Now()
-// 	for i := 0; i < 1000; i++ {
-// 		wg.Add(1)
-// 		go func() {
-// 			c.Inc()
-// 			wg.Done()
-// 		}()
-// 	}
-// 	wg.Wait()
-// 	end := time.Now()
-// 	fmt.Println(c.Load(), end.Sub(start))
-// }
+func test(c Counter) {
+	var wg sync.WaitGroup
+	start := time.Now()
+	for i := 0; i < 1000; i++ {
+		wg.Add(1)
+		go func() {
+			c.Inc()
+			wg.Done()
+		}()
+	}
+	wg.Wait()
+	end := time.Now()
+	fmt.Println(c.Load(), end.Sub(start))
+}
 
-// func main() {
-// 	c1 := CommonCounter{} // 非并发安全
-// 	test(c1)
-// 	c2 := MutexCounter{} // 使用互斥锁实现并发安全
-// 	test(&c2)
-// 	c3 := AtomicCounter{} // 并发安全且比互斥锁效率更高
-// 	test(&c3)
-// }
+func main() {
+	c1 := CommonCounter{} // 非并发安全
+	test(c1)
+	c2 := MutexCounter{} // 使用互斥锁实现并发安全
+	test(&c2)
+	c3 := AtomicCounter{} // 并发安全且比互斥锁效率更高
+	test(&c3)
+}
 // atomic包提供了底层的原子级内存操作，对于同步算法的实现很有用。这些函数必须谨慎地保证正确使用。除了某些特殊的底层应用，使用通道或者sync包的函数/类型实现同步更好。
 
-func main()  {
-	
-}
 
