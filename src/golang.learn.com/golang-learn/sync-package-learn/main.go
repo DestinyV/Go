@@ -8,7 +8,7 @@ import (
 // 锁
 
 var x int
-var wg sync.WaitGroup
+var wg sync.WaitGroupO
 var lock sync.Mutex
 
 func add() {
