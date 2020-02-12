@@ -1,9 +1,8 @@
 # GoLang-Learn
-## learning project of golang
 
 ### 1. Attention
 
-+ 须将该项目放于GOPATH文件中
+**须将该项目放于GOPATH文件中**
 
 ### 2. Link
 
