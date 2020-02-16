@@ -38,7 +38,7 @@ func main() {
 	// db.QueryRow(sqlstr).Scan(&u1.id, &u1.name, &u1.gender, &u1.profession) // 从连接池中取出一个连接去数据库查询单条记录 函数都是值拷贝
 	// fmt.Printf("query user is :%#v", u1)
 	query()
-	// insert()
+	insert()
 	// update()
 	// delete()
 }
@@ -74,7 +74,7 @@ func query() {
 
 func insert() {
 	sqlStr := "insert into users(name, gender, profession) values(?,?,?)"
-	result, err := db.Exec(sqlStr, "瑟曦", 0, "queen")
+	result, err := db.Exec(sqlStr, "排污口", 0, "线控器")
 	if err != nil {
 		fmt.Printf("insert failed, err:%v\n", err)
 		return
